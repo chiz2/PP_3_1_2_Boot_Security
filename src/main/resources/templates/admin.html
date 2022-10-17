@@ -23,9 +23,6 @@
             <td th:text="${user.getUsername()}">...</td>
             <td th:text="${user.getPassword()}">...</td>
             <td th:text="${user.getAuthorities()}">...</td>
-
-
-
             <td>
                 <form th:method="GET" th:action="@{/admin/delete/{id}(id=${user.getId()})}" >
                     <input type="submit" value="Delete" />
@@ -41,5 +38,7 @@
 </table>
 <br>
 <input type="button"  method="GET" onClick='location.href="/admin/new"' value="Create User">
+<input type="button"  method="GET" onClick='location.href="/user"' value="User Page">
+<input type="button"  method="GET" onClick='location.href="/login"' value="Log Out">
 </body>
 </html>
