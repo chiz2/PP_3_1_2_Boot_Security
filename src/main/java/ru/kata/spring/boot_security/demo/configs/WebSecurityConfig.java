@@ -18,11 +18,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
     private final UserService userService;
+    private final CustomUrlLogoutSuccessHandler customUrlLogoutSuccessHandler;
 
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserService userService, CustomUrlLogoutSuccessHandler customUrlLogoutSuccessHandler) {
         this.successUserHandler = successUserHandler;
         this.userService = userService;
+        this.customUrlLogoutSuccessHandler = customUrlLogoutSuccessHandler;
     }
 
     @Override
@@ -42,15 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
-                .permitAll();
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .addLogoutHandler(customUrlLogoutSuccessHandler)
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
-    /*@Bean
-    public JdbcUserDetailsManager jdbcUserDetailsManager() {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-        jdbcUserDetailsManager.setDataSource(dataSource);
-        return jdbcUserDetailsManager;
-    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
